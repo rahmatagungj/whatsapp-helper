@@ -8,13 +8,17 @@ const fixedEncodeURIComponent = (str) => {
   });
 };
 
-const Generator = ({ setLink }) => {
+const Generator = ({ link, setLink }) => {
   const [message, setMessage] = React.useState("");
   const [phoneNumber, setPhoneNumber] = React.useState("");
 
   const generateLink = () => {
     const encodedMessage = fixedEncodeURIComponent(message);
     setLink(URL + phoneNumber + "&text=" + encodedMessage);
+  };
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(link);
   };
 
   return (
@@ -39,7 +43,17 @@ const Generator = ({ setLink }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <button onClick={generateLink}>Generate Link</button>
+      <input
+        type="text"
+        name="result"
+        id="result"
+        className="result space"
+        value={link}
+        placeholder="Hasil"
+        disabled
+      />
+      <button onClick={generateLink}>Buat Tautan</button>
+      {link && <button onClick={copyLink}>Salin Tautan</button>}
     </div>
   );
 };

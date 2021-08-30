@@ -9,7 +9,6 @@ const App = () => {
     <div className="container center">
       <main>
         <Header />
-        <h2>{link}</h2>
         <Generator link={link} setLink={setLink} />
       </main>
     </div>
