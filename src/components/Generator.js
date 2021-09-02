@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 
 const URL = "https://api.whatsapp.com/send?phone=";
 
@@ -15,11 +16,26 @@ const Generator = ({ link, setLink }) => {
   const generateLink = () => {
     const encodedMessage = fixedEncodeURIComponent(message);
     setLink(URL + phoneNumber + "&text=" + encodedMessage);
+    navigator.clipboard.writeText(link);
+    toast.info("Tautan berhasil dibuat dan disalin pada clipboard.", {
+      position: "top-center",
+      autoClose: 3000,
+      autoClose: true,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const copyLink = () => {
     navigator.clipboard.writeText(link);
   };
+
+  React.useEffect(() => {
+    if (link) setLink(null);
+  }, [message, phoneNumber]);
 
   return (
     <div className="generator">
@@ -43,17 +59,18 @@ const Generator = ({ link, setLink }) => {
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <input
-        type="text"
-        name="result"
-        id="result"
-        className="result space"
-        value={link}
-        placeholder="Hasil"
-        disabled
-      />
+      {link && (
+        <input
+          type="text"
+          name="result"
+          id="result"
+          className="result space"
+          value={link}
+          placeholder="Hasil"
+          disabled
+        />
+      )}
       <button onClick={generateLink}>Buat Tautan</button>
-      {link && <button onClick={copyLink}>Salin Tautan</button>}
     </div>
   );
 };
